@@ -1,0 +1,1 @@
+#script used for basic arima model
