@@ -1,19 +1,20 @@
 import matplotlib.pyplot as plt
+import csv
 from matplotlib.dates import DateFormatter
 from src.price_df_provider import Price_df_provider
 
 # INPUT VALUES ----------------------------------
-data_source = "..\\data\\no2.csv"
+data_source = "..\\data\\input\\no2.csv"
 from_date = "2019-01-01"
 to_date = "2019-01-14"
 resolutions = ["hour", "average_day", "w_average_day"]
 resol = [0, 1]
 # DONE INPUT VALUES -------------------------------
 
-data = Price_df_provider(data_source, from_date, to_date, ",")  # get price data object
+data = Price_df_provider(data_source, from_date, to_date, decimal_sep=",")  # get price data object
 df = data.get_data_frame()  # get price dataframe
 
-save_source_data = str("..\\data\\prices_" + from_date + "_" + to_date + ".csv")
+save_source_data = str("..\\data\\output\\prices_" + from_date + "_" + to_date + ".csv")
 save_source_plot = str("..\\plots\\prices_" + from_date + "_" + to_date + ".png")
 date_name = df.columns[0]  # date name of column
 price_name = df.columns[1]  # price name of column
@@ -22,10 +23,10 @@ price_name = df.columns[1]  # price name of column
 legend_text = ""
 if 0 in resol:
     plt.plot(df[date_name], df[price_name], "b-", label="Hourly prices")
+    df.to_csv(path_or_buf=save_source_data + "_hourly", sep=',', header=True)
 if 1 in resol:
     daily_df = data.get_daily_average_duplicate_first_day()
-    print(daily_df)
-
+    daily_df.to_csv(path_or_buf=save_source_data + "_daily", sep=',', header=True)
     plt.plot(daily_df[date_name], daily_df[price_name], color="red", linewidth=5, label="Daily prices")
 
 ax = plt.gca()

@@ -6,7 +6,11 @@ from datetime import timedelta
 
 class Price_df_provider:
     def __init__(self, data_source, from_date, to_date, decimal_sep):
-        df = pd.read_csv(data_source, header=0, decimal=decimal_sep)  # full dataset
+        filetype = data_source[-3:]
+        if filetype =="csv":
+            df = pd.read_csv(data_source, header=0, decimal=decimal_sep)  # full dataset
+        elif filetype =="xls":
+            df = pd.read_excel(data_source, header=0)  # full dataset
         self.date_name = df.columns[0]  # date name of column
         df[self.date_name] = pd.to_datetime(df[self.date_name], dayfirst=False)  # date column to datetime
         self.start_date = dt.strptime(from_date, "%Y-%m-%d")
