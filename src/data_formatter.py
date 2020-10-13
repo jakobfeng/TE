@@ -101,7 +101,7 @@ def write_price_hourly_to_combined():
     df_all.rename({'Unnamed: 0': 'Date'}, axis=1, inplace=True)
     df_all['Hours'] = pd.to_datetime(df_all['Hours'], format='%H').dt.time
     df_all['Date'] = pd.to_datetime(df_all['Date'], format='%d-%m-%Y')
-    df_all.to_csv("..\\data\\input\\combined\\price_all_hourly.csv", index=False)
+    df_all.to_csv("..\\data\\input\\combined\\price_all_hourly2.csv", index=False)
 
 
 if __name__ == '__main__':
