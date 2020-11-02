@@ -46,6 +46,7 @@ def view_duplicates(name):
     print("\nNumber of articles: " + str(count))
     print("Number of hits: " + str(hits))
 
+
 if __name__ == '__main__':
     #get_ratio_between(783, 943)
     view_duplicates(930)

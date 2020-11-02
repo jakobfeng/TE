@@ -1,0 +1,9 @@
+data/input/consumption_daily/
+data/input/consumption_hourly/
+data/input/hydro_weekly/
+data/input/price_daily/
+data/input/price_hourly/
+data/input/production_daily/
+data/input/production_hourly/
+data/input/volume_daily/
+data/input/volume_hourly/
