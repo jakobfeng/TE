@@ -2,6 +2,15 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/data/input/consumption_daily" />
+      <excludeFolder url="file://$MODULE_DIR$/data/input/consumption_hourly" />
+      <excludeFolder url="file://$MODULE_DIR$/data/input/hydro_weekly" />
+      <excludeFolder url="file://$MODULE_DIR$/data/input/price_daily" />
+      <excludeFolder url="file://$MODULE_DIR$/data/input/price_hourly" />
+      <excludeFolder url="file://$MODULE_DIR$/data/input/production_daily" />
+      <excludeFolder url="file://$MODULE_DIR$/data/input/production_hourly" />
+      <excludeFolder url="file://$MODULE_DIR$/data/input/volume_daily" />
+      <excludeFolder url="file://$MODULE_DIR$/data/input/volume_hourly" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.7" jdkType="Python SDK" />
