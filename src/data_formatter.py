@@ -87,12 +87,14 @@ def aggregate_markets_volume(df):
         'NO Sell Vol': ["NO1 Sell", "NO2 Sell", "NO3 Sell", "NO4 Sell", "NO5 Sell"],
         'SE Buy Vol': ["SE1 Buy", "SE2 Buy", "SE3 Buy", "SE4 Buy"],
         'SE Sell Vol': ["SE1 Sell", "SE2 Sell", "SE3 Sell", "SE4 Sell"],
+        'FI Buy Vol': ["FI Buy"],
+        'FI Sell Vol': ["FI Sell"],
         'DK Buy Vol': ["DK1 Buy", "DK2 Buy"],
         'DK Sell Vol': ["DK1 Sell", "DK2 Sell"],
-        'Balt Buy Vol': ["EE Buy", "LV Buy", "LT Buy"],
-        'Balt Sell Vol': ["EE Sell", "LV Sell" ,"LT Sell"],
-        'FI Buy Vol': ["FI Buy"],
-        'FI Sell Vol': ["FI Sell"]
+        "Nordic Buy Vol": ["NO Buy Vol", "SE Buy Vol", "FI Buy Vol", "DK Buy Vol"],
+        "Nordic Sell Vol": ["NO Sell Vol", "SE Sell Vol", "FI Sell Vol", "DK Sell Vol"],
+        'Baltic Buy Vol': ["EE Buy", "LV Buy", "LT Buy"],
+        'Baltic Sell Vol': ["EE Sell", "LV Sell" ,"LT Sell"]
     }
     for market in market_to_columns.keys():
         df[market] = df[market_to_columns[market]].sum(axis=1)
@@ -121,7 +123,7 @@ def write_volume_to_combined(resolution, convert_to_csv, replace_commas):
     df_all = rename_column_names(df_all, col_name_changes)
     df_all = aggregate_markets_volume(df_all)
     incl_columns = ["Date", "Total Vol", "NO Buy Vol", "NO Sell Vol","SE Buy Vol", "SE Sell Vol","DK Buy Vol",
-                    "DK Sell Vol", "FI Buy Vol", "FI Sell Vol","Balt Buy Vol", "Balt Sell Vol"]
+                    "DK Sell Vol", "FI Buy Vol", "FI Sell Vol","Nordic Buy Vol", "Nordic Sell Vol","Baltic Buy Vol", "Baltic Sell Vol"]
     if resolution == "h":
         incl_columns.insert(1, "Hour")
     df_all = df_all[incl_columns]
@@ -183,13 +185,14 @@ def write_hydro_daily_to_combined():
         week_row = df_weekly.iloc[i, :]
         next_week_row = df_weekly.iloc[i+1, :]
         week_year = week_row[0]
-        week = "W" + str(int(week_year[:2])) #  minus one?
+        week = "W" + str(int(week_year[:2]))
         year = str(2000 + int(week_year[-2:]))
-        #print("{}, {}:".format(year, week))
+        minus_one_years = ["2014", "2015", "2019", "2020"] #  Se hydro weekly data. Confusion with weeks. Some years starts at 0, some at 1.
+        if year in minus_one_years:
+            week = "W" + str(int(week_year[:2])-1)  # minus one. Weeks starts at 0 these years
         first_date = datetime.strptime(year + " " + week + " w1", "%Y W%W w%w").date()
-        #print(first_date)
+        print("Year {}. W{}, firstdate {}, minus 1: {}".format(year, week_year[:2], first_date, year in minus_one_years))
         week_dates = [first_date + timedelta(days=x) for x in range(7)]
-        #print(week_dates)
         no_date_values = interpolate_week(week_row[1], next_week_row[1], week_dates)
         se_date_values = interpolate_week(week_row[2], next_week_row[2], week_dates)
         fi_date_values = interpolate_week(week_row[3], next_week_row[3], week_dates)
@@ -202,11 +205,12 @@ def write_hydro_daily_to_combined():
             if len(filtered_date) == 1:
                 index = filtered_date.index[0]
                 df_daily.loc[index, "NO Hydro"] = no_date_values[date]
-                #print("[{}: {}".format(date, no_date_values[date]))
                 df_daily.loc[index, "SE Hydro"] = se_date_values[date]
                 df_daily.loc[index, "FI Hydro"] = fi_date_values[date]
     df_daily["Date"] = df_daily["Date"].dt.strftime("%d-%m-%Y")
-    df_daily.to_csv("..\\data\\input\\combined\\hydro_daily.csv", index=False)
+    df_daily["Total Hydro"] = df_daily["NO Hydro"] + df_daily["SE Hydro"] + df_daily["FI Hydro"]
+    df_daily["Total Hydro"] = pd.to_numeric(df_daily["Total Hydro"])
+    df_daily.to_csv("..\\data\\input\\combined\\hydro_daily.csv", index=False, float_format='%g')
 
 
 #helping method for hydro hourly
@@ -216,8 +220,9 @@ def append_23_more_rows(df):
     no = last_row.iloc[0, 2]
     se = last_row.iloc[0, 3]
     fi = last_row.iloc[0, 4]
+    tot = last_row.iloc[0, 5]
     for i in range(1,24):
-        row = {"Date": date, "Hour": i, "NO Hydro": no, "SE Hydro": se, "FI Hydro": fi}
+        row = {"Date": date, "Hour": i, "NO Hydro": no, "SE Hydro": se, "FI Hydro": fi, "Total Hydro": tot}
         df = df.append(row, ignore_index=True)
     return df
 
@@ -232,7 +237,7 @@ def write_hydro_hourly_to_combined():
     df_hourly["Date"] = pd.to_datetime(df_hourly["Date"], format="%Y-%m-%d")
     df_hourly["Date"] = df_hourly["Date"].dt.strftime("%d-%m-%Y")
     df_hourly['Hour'] = df_hourly["Hour"].apply(lambda x: x.hour)
-    df_hourly = df_hourly[["Date", "Hour", "NO Hydro", "SE Hydro", "FI Hydro"]]
+    df_hourly = df_hourly[["Date", "Hour", "NO Hydro", "SE Hydro", "FI Hydro", "Total Hydro"]]
     df_hourly = append_23_more_rows(df_hourly)
     df_hourly.to_csv("..\\data\\input\\combined\\hydro_hourly.csv", index=False, float_format='%g')
 
@@ -335,6 +340,7 @@ def write_production_to_combined(resolution, convert_to_csv, replace_commas):
                         "Nordic": "Nordic Prod", "EE": "EE Prod", "LV": "LV Prod", "LT": "LT Prod",
                         "Baltic": "Baltic Prod"}
     df_all = rename_column_names(df_all, col_name_changes)
+    df_all["Total Prod"] = df_all["Nordic Prod"] + df_all["Baltic Prod"]
     df_all.to_csv(out_path, index=False, float_format='%g')
 
 def combine_all_data(resolution):
@@ -377,13 +383,15 @@ if __name__ == '__main__':
     print("Running method.." + "\n")
     #write_price_to_combined("d", convert_to_csv=True, replace_commas=True)
     #write_price_to_combined("h", convert_to_csv=True, replace_commas=True)
-    #write_volume_to_combined("d", convert_to_csv=True, replace_commas=True)
-    #write_volume_to_combined("h", convert_to_csv=True, replace_commas=True)
+    # write_volume_to_combined("d", convert_to_csv=False, replace_commas=True)
+    # write_volume_to_combined("h", convert_to_csv=False, replace_commas=True)
     # write_hydro_all_weekly(convert_to_csv = False, replace_commas=False) # replace_commas=False, always
     # write_hydro_daily_to_combined()
     # write_hydro_hourly_to_combined()
+    # write_consumption_to_combined("d", convert_to_csv=False, replace_commas=True)
     # write_consumption_to_combined("h", convert_to_csv=False, replace_commas=True)
+    # write_production_to_combined("d", convert_to_csv=False, replace_commas=True)
     # write_production_to_combined("h", convert_to_csv=False, replace_commas=True)
-    # write_production_to_combined("h")
+    # combine_all_data("daily")
     # combine_all_data("hourly")
 
