@@ -6,6 +6,7 @@ from datetime import datetime
 from datetime import timedelta
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 # helping method reformatting hour column
 def reformat_hour_column(df, date_sep):
@@ -343,6 +344,7 @@ def write_production_to_combined(resolution, convert_to_csv, replace_commas):
     df_all["Total Prod"] = df_all["Nordic Prod"] + df_all["Baltic Prod"]
     df_all.to_csv(out_path, index=False, float_format='%g')
 
+
 def combine_all_data(resolution):
     path = "..\\data\\input\\combined"
     all_paths = sorted(Path(path).iterdir())  # list all datasets paths
@@ -374,10 +376,63 @@ def combine_all_data(resolution):
         other_columns = [col for col in all_columns if col not in ordered_columns]
         ordered_columns.extend(other_columns)
         df = df[ordered_columns]
-        df.to_csv("..\\data\\input\\combined\\all_data_hourly.csv", index = False)
+        date_format = "%d-%m-%Y"
+        df['Date'] = pd.to_datetime(df['Date'], format=date_format)
+        df.to_csv("..\\data\\input\\combined\\all_data_hourly.csv", index = False, float_format='%g')
     else:
         print("HAS TO BE HOURLY OG DAILY")
         assert False
+
+def add_time_columns_to_all_data(resolution):
+    if resolution == "d":
+        data_path = "..\\data\\input\\combined\\all_data_daily.csv"
+    else:
+        data_path = "..\\data\\input\\combined\\all_data_hourly.csv"
+    date_format = "%Y-%m-%d"
+    df = pd.read_csv(data_path, sep=",")
+    df['Date'] = pd.to_datetime(df['Date'], format=date_format)
+    for index, row in df.iterrows():
+        date = row[0]
+        week = datetime.date(date).isocalendar()[1]
+        sine_week = math.sin(math.pi*week/52)
+        df.loc[index, "Sine Week"] = round(sine_week, 3)
+        month = date.month
+        sine_month = math.sin(math.pi*month/12)
+        df.loc[index, "Sine Month"] = round(sine_month, 3)
+        season = math.floor(date.month/4) + 1
+        sine_season = math.sin(math.pi*season/4)
+        df.loc[index, "Sine Season"] = round(sine_season, 3)
+    out_path = data_path
+    #out_path  = "..\\data\\input\\combined\\all_data_daily_weeks.csv"
+    df.to_csv(out_path, sep=",", index=False, float_format='%g')
+
+
+def add_hydro_deviations_to_all_data(resolution):
+    if resolution == "d":
+        data_path = "..\\data\\input\\combined\\all_data_daily.csv"
+    else:
+        data_path = "..\\data\\input\\combined\\all_data_hourly.csv"
+    df = pd.read_csv(data_path, sep=",")
+    date_format = "%Y-%m-%d"
+    df['Date'] = pd.to_datetime(df['Date'], format=date_format)
+    hydro_df = df[["Date", "NO Hydro", "SE Hydro","FI Hydro","Total Hydro"]]
+    average_year_df = hydro_df.groupby([hydro_df["Date"].dt.month.rename("Month"), hydro_df["Date"].dt.day.rename("Day")]).mean()
+    column_rename_dict = {"NO Hydro": "NO Mean", "SE Hydro": "SE Mean", "FI Hydro": "FI Mean", "Total Hydro": "Total Mean"}
+    average_year_df = rename_column_names(mean_hydro_df, column_rename_dict)
+    country_names = ["NO", "SE", "FI", "Total"]
+    for index, row in df.iterrows():
+        day = row["Date"].day
+        month = row["Date"].month
+        for country in country_names:
+            mean_col_name = country+" Mean"
+            day_row = average_year_df.loc[month, day]
+            mean = day_row[mean_col_name]
+            hydro = row[country + " Hydro"]
+            dev = hydro - mean
+            df.loc[index, country + " Hydro Dev"] = round(dev, 3)
+    out_path = data_path
+    df.to_csv(out_path, sep=",", index=False, float_format='%g')
+
 
 if __name__ == '__main__':
     print("Running method.." + "\n")
@@ -394,4 +449,9 @@ if __name__ == '__main__':
     # write_production_to_combined("h", convert_to_csv=False, replace_commas=True)
     # combine_all_data("daily")
     # combine_all_data("hourly")
+    # add_time_columns_to_all_data("d")
+    # add_time_columns_to_all_data("h")
+    # add_hydro_deviations_to_all_data("d")
+    # add_hydro_deviations_to_all_data("h")
+
 
