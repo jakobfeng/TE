@@ -1,10 +1,19 @@
 #Script for testing stuff
-from datetime import datetime
+import matplotlib.pyplot as plt
+import math
 
-year = "2018"
-week = "W0"
-first_date = datetime.strptime(year + " " + week + " w1", "%Y W%W w%w").date()
-print(first_date)
-next_week = "W1"
-next_date = datetime.strptime(year + " " + next_week + " w1", "%Y W%W w%w").date()
-print(next_date)
+
+def plot_sine_curve():
+    years = []
+    for j in range(2):
+        weeks = range(1, 53)
+        years.extend(weeks)
+    sine_weeks = [math.sin(math.pi*w/52) for w in years]
+    print(years)
+    print(sine_weeks)
+    plt.plot(range(len(sine_weeks)), sine_weeks)
+    plt.show()
+    plt.close()
+
+if __name__ == '__main__':
+    plot_sine_curve()
