@@ -1,7 +1,7 @@
 # Script for sorting files from the first output of search
 import pandas as pd
 
-full_df = pd.read_csv("slr_phase_1.csv", header=0, sep=";", encoding="utf-8")
+full_df = pd.read_csv("data\\phase_2_682.csv", header=0, sep=",", encoding="utf-8")
 
 
 def get_subset(model_type, horizon, market, output_type):
@@ -11,12 +11,12 @@ def get_subset(model_type, horizon, market, output_type):
     result_df = result_df[result_df["Output"].isin(output_type)]
     result_df = result_df.rename(columns={"Type of method/model": "Method"})
     result_df = result_df.reset_index()
-    result_df = result_df[["Authors", "Title", "Year", "Source title", "Cited by", "Method", "Horizon", "Market", "Output"]]
+    result_df = result_df[["Authors", "Title", "Year", "Cited by", "Method", "Horizon", "Market", "Output"]]
     result_df = short_string_column(result_df, "Title", 8)
     result_df = short_author_list(result_df, "Authors", 2)
     result_df = change_numbers_to_words(result_df)
     result_df = result_df.sort_values(by=["Year"])
-    result_df.to_csv("data_hybrid_short_medium_dam_probabilistic.csv", index=False)
+    result_df.to_csv("data\\data_hybrid_short_medium_dam_probabilistic_2.csv", index=False)
     return result_df
 
 
@@ -26,10 +26,10 @@ def change_numbers_to_words(df):
     mar_dict = {"1": "DAM", "2": "IDM", "3": "BM"}
     out_dict = {"1": "PO", "2": "DI"}
     for index, row in df.iterrows():
-        method = row[5]
-        horizon = row[6]
-        market = row[7]
-        output = row[8]
+        method = row[4]
+        horizon = row[5]
+        market = row[6]
+        output = row[7]
         if method in method_dict.keys():
             df.at[index, "Method"] = method_dict[method]
         else:
@@ -58,9 +58,9 @@ def short_author_list(df, col_name, limit):
 
 def get_data_hybrid_short_medium_dam_probabilistic():
     m_type = ["5", "1, 5", "2, 5", "3, 5", "4, 5"]
-    hor = ["1", "2", "1, 2"]
-    mar = ["1"]
-    out_type = ["2"]
+    hor = ["1", "2", "1, 2", "3"]
+    mar = ["1", "2", "3", "1, 3"]
+    out_type = ["2", "1, 2"]
     final_df = get_subset(m_type, hor, mar, out_type)
     return final_df
 

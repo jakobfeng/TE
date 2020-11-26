@@ -67,7 +67,12 @@ def filter_df_by_period(df, period):
 # Helping method for making date-column type datetime
 def convert_date_to_datetime(df_, resolution):
     date_format = "%d-%m-%Y"
-    df_['Date'] = pd.to_datetime(df_['Date'], format=date_format)
+    print(df_.head(1))
+    try:
+        df_['Date'] = pd.to_datetime(df_['Date'], format=date_format)
+    except:
+        date_format = "%Y-%m-%d"
+        df_['Date'] = pd.to_datetime(df_['Date'], format=date_format)
     if resolution == "h":
         df_["Date"] = pd.to_datetime(df_["Date"]) + pd.to_timedelta(df_["Hour"], unit='h')
         del df_['Hour']
@@ -79,6 +84,7 @@ def make_plot(df, resolution, save, data, title):
     columns = df.columns.tolist()
     labels = get_labels_from_columns(df.columns.tolist(), individual=True)
     l_width = get_line_width(data, resolution)
+    fig, ax = plt.subplots(figsize=(10, 5.5)) # REMOVE ?
     for i in range(1, len(columns)):
         plt.plot(df[columns[0]], df[columns[i]], linewidth=l_width, label=labels[i])
     for line in plt.legend(loc='upper center', ncol=min(4, len(columns) - 1), bbox_to_anchor=(0.5, 1.05),
@@ -141,7 +147,7 @@ def get_y_label(column):
 
 # Helping method for getting line width
 def get_line_width(data, resolution):
-    l_width = 0.3 if resolution == "h" else 0.7
+    l_width = 0.3 if resolution == "h" else 1
     if "Hydro" in data:
         l_width = 1
     return l_width
@@ -265,11 +271,11 @@ if __name__ == '__main__':
     # Data Options: Consume=0, Hydro=1, Price=2, Prod=3, Sell Vol=4, Buy Vol=5, Tot Vol=6
     # Sub Markets: sub_markets, nordic_markets, baltic_markets, nordic_baltic_markets, hydro_markets
     # --------------------------------------------------------------------------------------
-    data_options_idx = [2,0]  # choose. If two are chosen, its a double plot. 6 should not be plottet alone.
+    data_options_idx = [2]  # choose. If two are chosen, its a double plot. 6 should not be plottet alone.
     sub_markets_ = nordic_markets # choose
-    start_date = datetime.date(2014, 1, 1)  # chose
+    start_date = datetime.date(2019, 1, 1)  # chose
     end_date = datetime.date(2019, 12, 31)  # chose
-    resolution_ = "d"  # choose
+    resolution_ = "h"  # choose
     save_ = True  # choose
     # --------------------------------------------------------------------------------------
     data_ = [data_options[i] for i in data_options_idx]
