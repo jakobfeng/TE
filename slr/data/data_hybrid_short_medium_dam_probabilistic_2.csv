@@ -1,0 +1,39 @@
+Authors,Title,Year,Cited by,Method,Horizon,Market,Output
+"Valenzuela J.,  Mazumdar M. et al.",On the computation of the probability distribution of...,2001,20.0,HY,S,DAM,DI
+"Ni E.,  Luh P.B. et al.",Forecasting power market clearing price and its discrete...,2001,49,HY,S,DAM,DI
+"Zhang L.,  Luh P.B. et al.",An integrated neural network method for market clearing...,2002,9,DD,S,DAM,DI
+"Zhang L.,  Luh P.B. et al.",Power market clearing price prediction and confidence interval...,2002,13,DD,S,DAM,DI
+"Niimura T.,  Ko H.-S. et al.",A day-ahead electricity price prediction based on a...,2002,38,HY,S,DAM,DI
+"Guo J.-J.,  Luh P.B. et al.",Market clearing price prediction using a committee machine...,2002,12,DD,S,DAM,DI
+"Zhang L.,  Luh P.B. et al.",Energy clearing price prediction and confidence interval estimation...,2003,142,DD,S,DAM,DI
+"Ma Y.,  Luh P.B. et al.",A neural network-based method for forecasting zonal locational...,2004,23,DD,S,DAM,DI
+"Zhang L.,  Luh P.B. et al.",Neural network-based market clearing price prediction and confidence...,2005,152,DD,S,DAM,DI
+"Azevedo F.,  Vale Z.A. et al.",Forecasting electricity prices with historical statistical information using...,2006,19.0,DD,M,DAM,"1, 2"
+"Al-Ajlouni A.F.,  Yamin H.Y. et al.",Price volatility forecasting using artificial neural networks in...,2012,,DD,S,DAM,DI
+"Shrivastava N.A.,  Khosravi A. et al.",Prediction interval estimation for electricity price and demand...,2014,6.0,DD,M,DAM,DI
+"Nowotarski J.,  Weron R. et al.",Merging quantile regression with forecast averaging to obtain...,2014,5,HY,M,DAM,DI
+"Mei J.,  He D. et al.",A random forest method for real-time price forecasting...,2014,13,DD,S,BM,DI
+"Mori H.,  Nakano K. et al.",Application of Gaussian process to locational marginal pricing...,2014,3,HY,S,DAM,DI
+"Wan C.,  Xu Z. et al.",A hybrid approach for probabilistic forecasting of electricity...,2014,121.0,DD,S,DAM,DI
+"Shrivastava N.A.,  Panigrahi B.K. et al.",Prediction interval estimations for electricity demands and prices:...,2015,6.0,HY,M,DAM,DI
+"Rafiei M.,  Niknam T. et al.",A novel intelligent strategy for probabilistic electricity price...,2016,12,DD,S,DAM,DI
+"He D.,  Chen W.-P. et al.",A real-time electricity price forecasting based on the...,2016,3,DD,S,IDM,DI
+"Moreira R.,  Bessa R. et al.",Probabilistic forecasting of day-ahead electricity prices for the...,2016,6,HY,S,DAM,DI
+"Shayeghi H.,  Ghasemi A. et al.","Day-ahead electricity price forecasting using WPT, GMI and...",2017,13,DD,S,DAM,DI
+"Özgüner E.,  Tör O.B. et al.",Probabilistic day-ahead system marginal price forecasting with ANN...,2017,2,DD,S,DAM,DI
+"Rafiei M.,  Niknam T. et al.",Probabilistic Forecasting of Hourly Electricity Price by Generalization...,2017,60,HY,S,DAM,DI
+"Shao Z.,  Yang S. et al.",A new electricity price prediction strategy using mutual...,2017,21,DD,S,DAM,DI
+"Patil M.,  Deshmukh S.R. et al.",Electric power price forecasting using data mining techniques,2017,4,DD,M,DAM,DI
+"Wan C.,  Niu M. et al.",Pareto Optimal Prediction Intervals of Electricity Price,2017,33.0,DD,S,DAM,DI
+"Gligorić Z.,  Štrbac Savić S. et al.",Short-term electricity price forecasting model using interval-valued autoregressive...,2018,2,HY,S,DAM,DI
+Lemke F.,Self-organizing inductive modeling for probabilistic electricity price forecasting,2018,,DD,S,DAM,DI
+"Osório G.J.,  Lotfi M. et al.",Hybrid forecasting model for short-term electricity market prices...,2018,6,DD,M,DAM,DI
+"Janke T.,  Steinke F. et al.",Forecasting the price distribution of continuous intraday electricity...,2019,9,HY,S,IDM,DI
+"Díaz G.,  Coto J. et al.",Prediction and explanation of the formation of the...,2019,6,DD,S,DAM,DI
+"Bhagat M.,  Alamaniotis M. et al.",Extreme Interval Electricity Price Forecasting of Wholesale Markets...,2019,,DD,M,DAM,DI
+"Yang W.,  Wang J. et al.",A hybrid forecasting system based on a dual...,2019,48,DD,S,DAM,DI
+"Brusaferri A.,  Matteucci M. et al.",Bayesian deep learning based method for probabilistic forecast...,2019,12,DD,S,DAM,DI
+"Yang W.,  Wang J. et al.",A novel system for multi-step electricity price forecasting...,2020,9,DD,S,DAM,DI
+"Qu Z.,  Gao M. et al.",Probability Prediction Method of Short-Term Electricity Price Based...,2020,,DD,S,DAM,DI
+"Alshejari A.,  Kodogiannis V.S. et al.",Development of neurofuzzy architectures for electricity price forecasting,2020,1,DD,S,DAM,DI
+"MacIejowska K.,  Uniejewski B. et al.",PCA forecast averaging - Predicting day-ahead and intraday...,2020,,DD,S,"1, 3",DI
