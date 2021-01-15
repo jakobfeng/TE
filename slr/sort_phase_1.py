@@ -16,7 +16,7 @@ def get_subset(model_type, horizon, market, output_type):
     result_df = short_author_list(result_df, "Authors", 2)
     result_df = change_numbers_to_words(result_df)
     result_df = result_df.sort_values(by=["Year"])
-    result_df.to_csv("data\\data_hybrid_short_medium_dam_probabilistic_2.csv", index=False)
+    result_df.to_csv("data\\ci_hybrid_short_medium_dam_probabilistic.csv", index=False)
     return result_df
 
 

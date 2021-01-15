@@ -1,0 +1,25 @@
+,0
+equilibrium model,1
+jump-diffusion,1
+quantile regression,8
+factor model,3
+grey,1
+arx,2
+varx,1
+ensemble,4
+linear regression,3
+garch,2
+density regression,1
+gamlss,1
+ar,4
+functional regresison,1
+nchf,1
+arima,1
+mlp,10
+elm,9
+gaussian process,1
+anfis,1
+svm,3
+ci other,1
+logistic regression,1
+far,1
