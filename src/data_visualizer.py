@@ -275,7 +275,7 @@ if __name__ == '__main__':
     sub_markets_ = nordic_markets # choose
     start_date = datetime.date(2019, 1, 1)  # chose
     end_date = datetime.date(2019, 12, 31)  # chose
-    resolution_ = "h"  # choose
+    resolution_ = "d"  # choose
     save_ = True  # choose
     # --------------------------------------------------------------------------------------
     data_ = [data_options[i] for i in data_options_idx]
